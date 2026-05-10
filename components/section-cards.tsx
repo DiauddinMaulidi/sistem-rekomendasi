@@ -1,6 +1,6 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
+// import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardAction,
@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { TrendingUpIcon, TrendingDownIcon } from "lucide-react"
+import { TrendingUpIcon, TrendingDownIcon, Droplets, FlaskConical, Thermometer, LeafyGreen, CircleParking, Atom, ActivityIcon, Dot, Sprout } from "lucide-react"
 
 export function SectionCards() {
   return (
@@ -19,156 +19,123 @@ export function SectionCards() {
         <span className="flex justify-end">Kalender</span>
       </div>
       <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
-        <Card className="@container/card">
+        <Card className="@container/card bg-blue-200">
           <CardHeader>
-            <CardDescription>Kelembaban</CardDescription>
+            <CardDescription className="font-semibold text-black">Kelembaban</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
               62%
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                logo
-              </Badge>
+              <Droplets className="bg-blue-400 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              <TrendingUpIcon className="size-4" />
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-blue-400 rounded-full text-blue-400" />
               Sedang
             </div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-green-200">
           <CardHeader>
-            <CardDescription>Kelembaban</CardDescription>
+            <CardDescription className="font-semibold text-black">pH Tanah</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              62%
+              6.4
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                logo
-              </Badge>
+              <FlaskConical className="bg-green-400 text-green-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              <TrendingUpIcon className="size-4" />
-              Sedang
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-green-400 rounded-full text-green-400" />
+              Optimal
             </div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-orange-200">
           <CardHeader>
-            <CardDescription>Kelembaban</CardDescription>
+            <CardDescription className="font-semibold text-black">Suhu Tanah</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              62%
+              28.5°C
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                logo
-              </Badge>
+              <Thermometer className="bg-orange-400 text-orange-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              <TrendingUpIcon className="size-4" />
-              Sedang
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-orange-400 rounded-full text-orange-400" />
+              Normal
             </div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-purple-200">
           <CardHeader>
-            <CardDescription>Kelembaban</CardDescription>
+            <CardDescription className="font-semibold text-black">Nitrogen</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              62%
+              24 ppm
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                logo
-              </Badge>
+              <Sprout className="bg-purple-400 text-purple-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              <TrendingUpIcon className="size-4" />
-              Sedang
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-purple-400 rounded-full text-purple-400" />
+              Rendah
             </div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-amber-200">
           <CardHeader>
-            <CardDescription>New Customers</CardDescription>
+            <CardDescription className="font-semibold text-black">Fosfor</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              1,234
+              16 ppm
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingDownIcon
-                />
-                -20%
-              </Badge>
+              <CircleParking className="bg-amber-400 text-amber-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              Down 20% this period{" "}
-              <TrendingDownIcon className="size-4" />
-            </div>
-            <div className="text-muted-foreground">
-              Acquisition needs attention
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-amber-400 rounded-full text-amber-400" />
+              Rendah
             </div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-cyan-200">
           <CardHeader>
-            <CardDescription>Active Accounts</CardDescription>
+            <CardDescription className="font-semibold text-black">Kalium</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              45,678
+              24 ppm
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                +12.5%
-              </Badge>
+              <Atom className="bg-cyan-400 text-cyan-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              Strong user retention{" "}
-              <TrendingUpIcon className="size-4" />
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-cyan-400 rounded-full text-cyan-400" />
+              Rendah
             </div>
-            <div className="text-muted-foreground">Engagement exceed targets</div>
           </CardFooter>
         </Card>
-        <Card className="@container/card">
+        <Card className="@container/card bg-rose-200">
           <CardHeader>
-            <CardDescription>Growth Rate</CardDescription>
+            <CardDescription className="font-semibold text-black">Electrical Conductivity</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              4.5%
+              1.2 dS/m
             </CardTitle>
             <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon
-                />
-                +4.5%
-              </Badge>
+              <ActivityIcon className="bg-rose-400 text-rose-900 rounded-full w-8 h-8 p-1" />
             </CardAction>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 font-medium">
-              Steady performance increase{" "}
-              <TrendingUpIcon className="size-4" />
+            <div className="line-clamp-1 flex items-center gap-2 font-medium">
+              <Dot className="size-3 bg-rose-400 rounded-full text-rose-400" />
+              Normal
             </div>
-            <div className="text-muted-foreground">Meets growth projections</div>
           </CardFooter>
         </Card>
       </div>
