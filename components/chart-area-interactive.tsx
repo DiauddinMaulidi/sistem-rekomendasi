@@ -201,10 +201,10 @@ export function ChartAreaInteractive() {
             </Table>
           </div>
         </CardContent>
-        <div className="flex items-center gap-2 justify-center bg-emerald-700 text-white rounded-[10px] mt-auto p-3 mx-4">
+        <button className="flex items-center gap-2 justify-center cursor-pointer bg-emerald-700 hover:bg-emerald-600 text-white rounded-[10px] mt-auto p-2 mx-4">
           <Bookmark />
           Simpan Rekomendasi
-        </div>
+        </button>
       </Card>
     </div>
   )
