@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 import data from "./data.json"
+import { RiwayatDash } from "@/components/riwayat-terakhir"
 
 export default function Page() {
   return (
@@ -27,7 +28,8 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable data={data} />
+              {/* <DataTable data={data} /> */}
+              <RiwayatDash />
             </div>
           </div>
         </div>

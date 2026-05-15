@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -16,6 +17,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import { BadgeCheck, Bookmark } from "lucide-react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 export const description = "An interactive area chart"
 
@@ -66,6 +69,20 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+const datas = [
+    {
+        "Pupuk": "Urea",
+        "Fungsi": "Sumber Nitrogen (N)",
+        "Dosis": "100 kg/ha",
+    },
+    {
+        "Pupuk": "SP-36",
+        "Fungsi": "Sumber Fosfor (P)",
+        "Dosis": "75 kg/ha",
+    },
+    
+]
+
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("2d")
@@ -91,69 +108,104 @@ export function ChartAreaInteractive() {
   // })
 
   return (
-    <Card className="@container/card w-[60%]">
-      <CardHeader>
-        <CardTitle>Tren Kondisi Tanah</CardTitle>
-      </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-62.5 w-full"
-        >
-          <LineChart data={chartData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent indicator="dot"/>
-              }
-            />
-            {parameterKeys.map((chart) => (
-              <Line
-                key={chart}
-                dataKey={`${chart}`}
-                type="natural"
-                stroke={parameterColors[chart]}
-                strokeWidth={2}
-                dot={false}
+    <div className="grid grid-cols-[55%_45%] gap-4 items-stretch">
+      <Card className="@container/card h-full">
+        <CardHeader>
+          <CardTitle>Tren Kondisi Tanah</CardTitle>
+        </CardHeader>
+        <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-62.5 w-full"
+          >
+            <LineChart data={chartData}>
+              <defs>
+                <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-desktop)"
+                    stopOpacity={1.0}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-desktop)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+                <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-mobile)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-mobile)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
               />
-            ))}
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent indicator="dot"/>
+                }
+              />
+              {parameterKeys.map((chart) => (
+                <Line
+                  key={chart}
+                  dataKey={`${chart}`}
+                  type="natural"
+                  stroke={parameterColors[chart]}
+                  strokeWidth={2}
+                  dot={false}
+                />
+              ))}
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+      <Card className="@container/card bg-green-50 flex flex-col h-full">
+        <CardHeader>
+          <CardTitle>Rekomendasi Pemupukan</CardTitle>
+          <div className="bg-green-200 border-2 border-green-300 rounded-[10px] p-3 flex items-center">
+            <BadgeCheck className="text-green-700 w-20" />
+            <span>Berdasarkan kondisi tanah saat ini, berikut rekomendasi pemupukan yang disarankan.</span>
+          </div>
+        </CardHeader>
+        <CardContent className="flex-1 overflow-hidden">
+          <div className="h-full max-h-32 overflow-y-auto border rounded-md bg-white">
+            <Table>
+              <TableHeader>
+                <TableRow>{Object.keys(datas[0]).map((head) => (
+                  <TableHead key={head}>{head}</TableHead>
+                ))}</TableRow>
+              </TableHeader>
+              <TableBody>
+                {datas.map((data, index) => (
+                  <TableRow key={index}>
+                      <TableCell>{data.Pupuk}</TableCell>
+                      <TableCell>{data.Fungsi}</TableCell>
+                      <TableCell>{data.Dosis}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        <div className="flex items-center gap-2 justify-center bg-emerald-700 text-white rounded-[10px] mt-auto p-3 mx-4">
+          <Bookmark />
+          Simpan Rekomendasi
+        </div>
+      </Card>
+    </div>
   )
 }

@@ -16,7 +16,7 @@ export function SectionCards() {
     <div>
       <div className="px-6 mb-2 grid grid-cols-2 justify-between">
         <span className="font-bold">Kondisi Tanah</span>
-        <span className="flex justify-end">Kalender</span>
+        {/* <span className="flex justify-end">Kalender</span> */}
       </div>
       <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
         <Card className="@container/card bg-blue-200">
