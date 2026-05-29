@@ -10,30 +10,42 @@ import { ArrowRight, Eye } from "lucide-react"
 const datas = [
     {
         "Tanggal": "15/05/2026",
-        "Lahan": "Lahan padi 1",
-        "Rekomendasi": "Urea,SP-36,KCI",
-        "Dosis (kg/ha)": "100,75,50",
+        "Kelembaban (%)": 62,
+        "pH": 28.5,
+        "Suhu (C)": 28.5,
+        "N (ppm)": 24,
+        "P (ppm)": 16,
+        "K (ppm)": 35,
+        "EC (dS/m)": 1.2,
     },
     {
         "Tanggal": "16/05/2026",
-        "Lahan": "Lahan jagung 1",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
+        "Kelembaban (%)": 62,
+        "pH": 28.5,
+        "Suhu (C)": 28.5,
+        "N (ppm)": 24,
+        "P (ppm)": 16,
+        "K (ppm)": 35,
+        "EC (dS/m)": 1.2,
     },
     {
-        "Tanggal": "12/05/2026",
-        "Lahan": "Lahan jagung 2",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
+        "Tanggal": "17/05/2026",
+        "Kelembaban (%)": 62,
+        "pH": 28.5,
+        "Suhu (C)": 28.5,
+        "N (ppm)": 24,
+        "P (ppm)": 16,
+        "K (ppm)": 35,
+        "EC (dS/m)": 1.2,
     },
 ]
 
-export function RiwayatDash() {
+export function DataSensor() {
     return (
         <div className="px-2 pt-4 sm:px-6 sm:pt-6">
             <Card className="@container/card">
                 <CardHeader>
-                    <CardTitle>Riwayat Pemupukan</CardTitle>
+                    <CardTitle>Data Sensor Terbaru</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Table>
@@ -46,10 +58,14 @@ export function RiwayatDash() {
                         <TableBody>
                             {datas.map((data, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{data.Tanggal}</TableCell>
-                                    <TableCell>{data.Lahan}</TableCell>
-                                    <TableCell>{data.Rekomendasi}</TableCell>
-                                    <TableCell>{data["Dosis (kg/ha)"]}</TableCell>
+                                    <TableCell>{data["Tanggal"]}</TableCell>
+                                    <TableCell>{data["Kelembaban (%)"]}</TableCell>
+                                    <TableCell>{data["pH"]}</TableCell>
+                                    <TableCell>{data["Suhu (C)"]}</TableCell>
+                                    <TableCell>{data["N (ppm)"]}</TableCell>
+                                    <TableCell>{data["P (ppm)"]}</TableCell>
+                                    <TableCell>{data["K (ppm)"]}</TableCell>
+                                    <TableCell>{data["EC (dS/m)"]}</TableCell>
                                     <TableCell>
                                         <button className="cursor-pointer"><Eye size={18} /></button>
                                     </TableCell>
@@ -58,7 +74,7 @@ export function RiwayatDash() {
                         </TableBody>
                     </Table>
                     <button className="cursor-pointer rounded-[10px] bg-gray-200 text-blue-600 font-bold flex items-center justify-center gap-2 p-3 w-full hover:bg-gray-300 transition">
-                        Lihat Semua Riwayat
+                        Lihat Semua Data
                         <ArrowRight className="w-4 h-4" />
                     </button>
                 </CardContent>

@@ -7,15 +7,21 @@ import { usePathname } from "next/navigation"
 const dataTitle = [
   {
     no: 1,
-    title: "Selamat datang, Petani!",
+    title: "Selamat datang, Kawan!",
     subTitle: "Berikut ringkasan kondisi tanah dan rekomendasi pemupukan hari ini.",
     url: "/dashboard"
   },
   {
     no: 2,
     title: "Monitoring Tanah",
-    subTitle: "Pantau kondisi tanah.",
+    subTitle: "Pantau kondisi tanah secara real-time berdasarkan data sensor.",
     url: "/monitoring-tanah"
+  },
+  {
+    no: 3,
+    title: "Rekomendasi Pemupukan",
+    subTitle: "Rekomendasi diberikan berdasarkan 7 parameter tanah.",
+    url: "/rekomendasi-pemupukan"
   }
 ]
 

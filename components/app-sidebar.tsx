@@ -87,7 +87,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarContent className="data-[slot=sidebar-menu-button]:py-6! flex flex-row">
-              {/* <CommandIcon className="size-5!" /> */}
               <Image src="./plant.svg" alt="Logo Sistem" width={50} height={50} />
               <p>
                 <span className="text-2xl font-semibold font-sans">AgriSmart</span><br />
@@ -112,7 +111,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.icon}
                 <span>{item.title}</span>
               </button>
-              {/* <NavMain items={data.navMain} /> */}
             </Link>
           )
         })}
