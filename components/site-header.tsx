@@ -22,6 +22,12 @@ const dataTitle = [
     title: "Rekomendasi Pemupukan",
     subTitle: "Rekomendasi diberikan berdasarkan 7 parameter tanah.",
     url: "/rekomendasi-pemupukan"
+  },
+  {
+    no: 4,
+    title: "Riwayat Rekomendasi",
+    subTitle: "Lihat dan kelola riwayat rekomendasi pemupukan yang pernah dibuat.",
+    url: "/riwayat-rekomendasi"
   }
 ]
 

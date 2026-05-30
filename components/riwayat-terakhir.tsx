@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ArrowRight, Eye } from "lucide-react"
+import Link from "next/link"
 
 const datas = [
     {
@@ -57,10 +58,12 @@ export function RiwayatDash() {
                             ))}
                         </TableBody>
                     </Table>
-                    <button className="cursor-pointer rounded-[10px] bg-gray-200 text-blue-600 font-bold flex items-center justify-center gap-2 p-3 w-full hover:bg-gray-300 transition">
-                        Lihat Semua Riwayat
-                        <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <Link href="/riwayat-rekomendasi">
+                        <button className="cursor-pointer rounded-[10px] bg-gray-200 text-blue-600 font-bold flex items-center justify-center gap-2 p-3 w-full hover:bg-gray-300 transition">
+                            Lihat Semua Riwayat
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </Link>
                 </CardContent>
             </Card>
         </div>
