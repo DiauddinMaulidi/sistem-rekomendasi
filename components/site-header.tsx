@@ -28,6 +28,12 @@ const dataTitle = [
     title: "Riwayat Rekomendasi",
     subTitle: "Lihat dan kelola riwayat rekomendasi pemupukan yang pernah dibuat.",
     url: "/riwayat-rekomendasi"
+  },
+  {
+    no: 5,
+    title: "Lahan",
+    subTitle: "Kelola data lahan, tanaman, dan sensor yang terhubung.",
+    url: "/lahan"
   }
 ]
 

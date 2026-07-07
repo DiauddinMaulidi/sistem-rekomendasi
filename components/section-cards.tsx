@@ -9,9 +9,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { TrendingUpIcon, TrendingDownIcon, Droplets, FlaskConical, Thermometer, LeafyGreen, CircleParking, Atom, ActivityIcon, Dot, Sprout } from "lucide-react"
+import { getPredict, sendPredict } from "@/services/predict"
+import { Droplets, FlaskConical, Thermometer, CircleParking, Atom, ActivityIcon, Dot, Sprout } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export function SectionCards() {
+
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+      try {
+        const data = await getPredict();
+        setResult(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+  async function handlePredict() {
+    const data = await sendPredict();
+    setResult(data);
+  }
+  
   return (
     <div>
       <div className="px-6 mb-2 grid grid-cols-2 justify-between">
@@ -23,7 +46,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Kelembaban</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              62%
+              {result?.kelembaban}%
             </CardTitle>
             <CardAction>
               <Droplets className="bg-blue-400 rounded-full w-8 h-8 p-1" />
@@ -40,7 +63,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">pH Tanah</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              6.4
+              {result?.pH_Tanah}
             </CardTitle>
             <CardAction>
               <FlaskConical className="bg-green-400 text-green-900 rounded-full w-8 h-8 p-1" />
@@ -57,7 +80,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Suhu Tanah</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              28.5°C
+              {result?.suhuTanah}°C
             </CardTitle>
             <CardAction>
               <Thermometer className="bg-orange-400 text-orange-900 rounded-full w-8 h-8 p-1" />
@@ -74,7 +97,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Nitrogen</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              24 ppm
+              {result?.nitrogen} ppm
             </CardTitle>
             <CardAction>
               <Sprout className="bg-purple-400 text-purple-900 rounded-full w-8 h-8 p-1" />
@@ -91,7 +114,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Fosfor</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              16 ppm
+              {result?.fosfor} ppm
             </CardTitle>
             <CardAction>
               <CircleParking className="bg-amber-400 text-amber-900 rounded-full w-8 h-8 p-1" />
@@ -108,7 +131,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Kalium</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              24 ppm
+              {result?.kalium} ppm
             </CardTitle>
             <CardAction>
               <Atom className="bg-cyan-400 text-cyan-900 rounded-full w-8 h-8 p-1" />
@@ -125,7 +148,7 @@ export function SectionCards() {
           <CardHeader>
             <CardDescription className="font-semibold text-black">Electrical Conductivity</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              1.2 dS/m
+              {result?.ec} dS/m
             </CardTitle>
             <CardAction>
               <ActivityIcon className="bg-rose-400 text-rose-900 rounded-full w-8 h-8 p-1" />
@@ -137,6 +160,11 @@ export function SectionCards() {
               Normal
             </div>
           </CardFooter>
+        </Card>
+        <Card className="@container/card bg-rose-200">
+          <button onClick={handlePredict}>
+            Prediksi
+        </button>
         </Card>
       </div>
     </div>

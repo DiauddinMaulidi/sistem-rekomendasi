@@ -4,6 +4,7 @@ import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import { StatusTanah } from "@/components/status-tanah";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { ChartAreaInteractive } from "./charts";
 
 
 export default function Page() {
@@ -26,8 +27,9 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <StatusTanah />
               </div>
+                <ChartAreaInteractive />
               {/* <DataTable data={data} /> */}
-              <DataSensor />
+              {/* <DataSensor /> */}
             </div>
           </div>
         </div>

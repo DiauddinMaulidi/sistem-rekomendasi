@@ -62,20 +62,6 @@ const data = {
         <MapPinned />
       ),
     },
-    {
-      title: "Sensor",
-      url: "/sensor",
-      icon: (
-        <RadioTower />
-      ),
-    },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: (
-        <Settings2Icon />
-      ),
-    },
   ],
 }
 
