@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardContent,
@@ -5,31 +6,31 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { getLatestRek } from "@/services/riwayat"
 import { ArrowRight, Eye } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
-const datas = [
-    {
-        "Tanggal": "15/05/2026",
-        "Lahan": "Lahan padi 1",
-        "Rekomendasi": "Urea,SP-36,KCI",
-        "Dosis (kg/ha)": "100,75,50",
-    },
-    {
-        "Tanggal": "16/05/2026",
-        "Lahan": "Lahan jagung 1",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
-    },
-    {
-        "Tanggal": "12/05/2026",
-        "Lahan": "Lahan jagung 2",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
-    },
-]
+interface Props {
+    refresh: boolean;
+}
 
-export function RiwayatDash() {
+export function RiwayatDash({refresh}: Props) {
+    const [result, setResult] = useState<any>(null)
+
+    async function riwayatPredict() {
+        try {
+            const sensorRiwayat = await getLatestRek()
+            setResult(sensorRiwayat)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        riwayatPredict()
+    }, [refresh])
+
     return (
         <div className="px-2 pt-4 sm:px-6 sm:pt-6">
             <Card className="@container/card">
@@ -39,18 +40,20 @@ export function RiwayatDash() {
                 <CardContent>
                     <Table>
                         <TableHeader>
-                            <TableRow>{Object.keys(datas[0]).map((heads) => (
-                                <TableHead key={heads}>{heads}</TableHead> ))}
+                            <TableRow>
+                                <TableHead>Tanggal</TableHead>
+                                <TableHead>Rekomendasi</TableHead>
+                                <TableHead>Dosis</TableHead>
                                 <TableHead>Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {datas.map((data, index) => (
+                            {result?.map((data: any, index: number) => (
                                 <TableRow key={index}>
-                                    <TableCell>{data.Tanggal}</TableCell>
-                                    <TableCell>{data.Lahan}</TableCell>
-                                    <TableCell>{data.Rekomendasi}</TableCell>
-                                    <TableCell>{data["Dosis (kg/ha)"]}</TableCell>
+                                    <TableCell>{data.tanggal}</TableCell>
+                                    {/* <TableCell>{data.Lahan}</TableCell> */}
+                                    <TableCell>{data.jenisPupuk}</TableCell>
+                                    <TableCell>{data.dosis}</TableCell>
                                     <TableCell>
                                         <button className="cursor-pointer"><Eye size={18} /></button>
                                     </TableCell>
