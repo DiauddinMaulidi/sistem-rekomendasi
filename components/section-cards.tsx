@@ -34,7 +34,6 @@ export function SectionCards() {
     <div>
       <div className="px-6 mb-2 grid grid-cols-2 justify-between">
         <span className="font-bold">Kondisi Tanah</span>
-        {/* <span className="flex justify-end">Kalender</span> */}
       </div>
       <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
         <Card className="@container/card bg-blue-200">
@@ -49,8 +48,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-blue-400 rounded-full text-blue-400" />
-              Sedang
+              {/* <Dot className="size-3 bg-blue-400 rounded-full text-blue-400" />
+              Sedang */}
             </div>
           </CardFooter>
         </Card>
@@ -66,8 +65,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-green-400 rounded-full text-green-400" />
-              Optimal
+              {/* <Dot className="size-3 bg-green-400 rounded-full text-green-400" />
+              Optimal */}
             </div>
           </CardFooter>
         </Card>
@@ -83,8 +82,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-orange-400 rounded-full text-orange-400" />
-              Normal
+              {/* <Dot className="size-3 bg-orange-400 rounded-full text-orange-400" />
+              Normal */}
             </div>
           </CardFooter>
         </Card>
@@ -100,8 +99,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-purple-400 rounded-full text-purple-400" />
-              Rendah
+              {/* <Dot className="size-3 bg-purple-400 rounded-full text-purple-400" />
+              Rendah */}
             </div>
           </CardFooter>
         </Card>
@@ -117,8 +116,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-amber-400 rounded-full text-amber-400" />
-              Rendah
+              {/* <Dot className="size-3 bg-amber-400 rounded-full text-amber-400" />
+              Rendah */}
             </div>
           </CardFooter>
         </Card>
@@ -134,8 +133,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-cyan-400 rounded-full text-cyan-400" />
-              Rendah
+              {/* <Dot className="size-3 bg-cyan-400 rounded-full text-cyan-400" />
+              Rendah */}
             </div>
           </CardFooter>
         </Card>
@@ -151,8 +150,8 @@ export function SectionCards() {
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex items-center gap-2 font-medium">
-              <Dot className="size-3 bg-rose-400 rounded-full text-rose-400" />
-              Normal
+              {/* <Dot className="size-3 bg-rose-400 rounded-full text-rose-400" /> */}
+              {/* Normal */}
             </div>
           </CardFooter>
         </Card>

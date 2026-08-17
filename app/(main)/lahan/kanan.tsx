@@ -10,11 +10,11 @@ const Kanan = () => {
                 <X className='cursor-pointer' />
             </div>
             <div className='flex gap-2'>
-                <img src="./sawahA.jpg" alt="sawah A" className='w-20 h-20 rounded-[10%]' />
-                <div className='leading-6'>
-                    <h1 className='font-bold'>Sawah A</h1>
-                    <h2>Pringgabaya, Lombok Timur</h2>
-                    <h2>Luas: 1.20 Ha</h2>
+                <img src="./sawahA.jpg" alt="sawahA" className='w-20 h-20 rounded-[10%]' />
+                <div className="leading-6">
+                    <h1 className="font-bold">"tes"</h1>
+                    <h2>tes</h2>
+                    <h2>tes</h2>
                 </div>
             </div>
         </Card>

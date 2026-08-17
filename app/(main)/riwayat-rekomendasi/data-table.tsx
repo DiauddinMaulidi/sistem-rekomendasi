@@ -10,60 +10,48 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from "@/components/ui/input"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ArrowRight, ChevronDown, Eye } from "lucide-react"
-import Link from "next/link"
+import { getLatestRek } from "@/services/riwayat"
+import { ChevronDown, Eye } from "lucide-react"
 import { useEffect, useState } from "react"
-
-const datas = [
-    {
-        "Tanggal": "15/05/2026",
-        "Lahan": "Lahan padi 1",
-        "Rekomendasi": "Urea,SP-36,KCI",
-        "Dosis (kg/ha)": "100,75,50",
-        "Luas (ha)": 1.20,
-    },
-    {
-        "Tanggal": "16/05/2026",
-        "Lahan": "Lahan jagung 1",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
-        "Luas (ha)": 1.20,
-    },
-    {
-        "Tanggal": "12/05/2026",
-        "Lahan": "Lahan jagung 2",
-        "Rekomendasi": "Urea",
-        "Dosis (kg/ha)": "100",
-        "Luas (ha)": 2.20,
-    },
-]
-
 
 export function RiwayatRek() {
     const [search, setSearch] = useState("")
     const [jenisPupuk, setJenisPupuk] = useState("")
     const [currentPage, setCurrentPage] = useState(1);
+    const [result, setResult] = useState<any>(null)
     const itemsPerPage = 5;
     
     const handleChange = (e: { target: { value: string;};}) => {
         setSearch(e.target.value)
     }
 
-    const dataFilters = datas.filter(data => {
+    const dataFilters = result?.data?.filter((data: any) => {
         const searchData = search.toLowerCase();
         
         const cocokSearch =
-            data.Tanggal.includes(searchData) ||
-            data.Lahan.toLowerCase().includes(searchData) ||
-            data.Rekomendasi.toLowerCase().includes(searchData) ||
-            data["Dosis (kg/ha)"].toLowerCase().includes(searchData) ||
-            data["Luas (ha)"].toString().includes(searchData)
+            data.tanggal.includes(searchData) ||
+            data.jenisPupuk.toLowerCase().includes(searchData) ||
+            String(data.dosis).toLowerCase().includes(searchData)
 
         const cocokPupuk =
-            !jenisPupuk || jenisPupuk === "Semua Jenis pupuk" || data.Rekomendasi.includes(jenisPupuk);
+            !jenisPupuk || data.jenisPupuk === jenisPupuk;
 
         return cocokSearch && cocokPupuk;
-    })
+    }) ?? []
+    
+    async function riwayatPredict() {
+        try {
+            const sensorRiwayat = await getLatestRek()
+            setResult(sensorRiwayat)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        riwayatPredict()
+    }, [])
+
 
     useEffect(() => {
         setCurrentPage(1)
@@ -88,27 +76,30 @@ export function RiwayatRek() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => setJenisPupuk("")}>Semua Jenis pupuk</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => setJenisPupuk("Urea")}>Urea</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setJenisPupuk("SP-36")}>SP-36</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setJenisPupuk("KCI")}>KCI</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setJenisPupuk("NPK")}>NPK</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setJenisPupuk("DAP")}>DAP</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setJenisPupuk("MOP")}>MOP</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setJenisPupuk("Zinc_Sulphate")}>Zinc Sulphate</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setJenisPupuk("Compost")}>Compost</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
-                            <TableRow>{Object.keys(datas[0]).map((heads) => (
-                                <TableHead key={heads}>{heads}</TableHead> ))}
+                            <TableRow>
+                                <TableHead>Tanggal</TableHead>
+                                <TableHead>Rekomendasi</TableHead>
+                                <TableHead>Dosis</TableHead>
                                 <TableHead>Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {currentData.map((data, index) => (
+                            {currentData?.map((data: any, index: number) => (
                                 <TableRow key={index}>
-                                    <TableCell>{data.Tanggal}</TableCell>
-                                    <TableCell>{data.Lahan}</TableCell>
-                                    <TableCell>{data.Rekomendasi}</TableCell>
-                                    <TableCell>{data["Dosis (kg/ha)"]}</TableCell>
-                                    <TableCell>{data["Luas (ha)"]}</TableCell>
+                                    <TableCell>{data.tanggal}</TableCell>
+                                    <TableCell>{data.jenisPupuk}</TableCell>
+                                    <TableCell>{data.dosis} kg/ha</TableCell>
                                     <TableCell>
                                         <button className="cursor-pointer"><Eye size={18} /></button>
                                     </TableCell>

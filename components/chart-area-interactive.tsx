@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/card"
 import { BadgeCheck, Bookmark } from "lucide-react"
 import { sendPredict } from "@/services/predict"
-import { saveRecommendation } from "@/services/recommendation"
-import { getLatestRek } from "@/services/riwayat"
-import { RiwayatDash } from "./riwayat-terakhir"
+import { lastRecommendation, saveRecommendation } from "@/services/recommendation"
 
 interface Props {
     onSaved: () => void;
@@ -20,19 +18,19 @@ interface Props {
 export function ChartAreaInteractive({onSaved}: Props) {
 
   const [result, setResult] = React.useState<any>(null)
-  const [loading,setLoading] = React.useState(false);
 
   async function handlePredict(){
     try{
-        setLoading(true);
-        const data = await sendPredict();
+        const data = await lastRecommendation();
         setResult(data);
     }catch(err){
         console.error(err);
-    }finally{
-        setLoading(false);
     }
   }
+
+  React.useEffect(() => {
+    handlePredict()
+  }, [])
 
   async function handleSave(){
     if(!result){
@@ -61,10 +59,10 @@ export function ChartAreaInteractive({onSaved}: Props) {
     <div className="items-stretch">
       <Card className="@container/card bg-green-50 flex flex-col h-full">
         <CardHeader>
-          <CardTitle>Rekomendasi Pemupukan</CardTitle>
+          <CardTitle>Rekomendasi Terakhir</CardTitle>
           <div className="bg-green-200 border-2 border-green-300 rounded-[10px] py-3 flex items-center">
-            <BadgeCheck className="text-green-700 w-20" />
-            <span>Berdasarkan kondisi tanah saat ini, berikut rekomendasi pemupukan yang disarankan.</span>
+            <BadgeCheck className="text-green-700 -mx-3 w-20" />
+            <span>Berdasarkan kondisi terakhir, berikut rekomendasi pemupukan yang disarankan.</span>
           </div>
         </CardHeader>
         <CardContent className="flex gap-3 overflow-hidden">
@@ -82,17 +80,8 @@ export function ChartAreaInteractive({onSaved}: Props) {
               <span className="font-semibold">Dosis yang disarankan</span>
               <h1 className="text-green-900 text-2xl font-bold">{result?.dosis} kg/ha</h1>
             </div>
-            <div className="flex items-end justify-center">
-              <button onClick={handlePredict} disabled={loading} className="bg-emerald-700 hover:bg-emerald-600 text-white rounded-[10px] p-3">
-                { loading ? "Memproses..." : "Prediksi" }
-              </button>
-            </div>
           </div>
         </CardContent>
-        <button onClick={handleSave} className="flex items-center gap-2 justify-center cursor-pointer bg-emerald-700 hover:bg-emerald-600 text-white rounded-[10px] mt-auto p-2 mx-4">
-          <Bookmark />
-          Simpan Rekomendasi
-        </button>
       </Card>
     </div>
   )

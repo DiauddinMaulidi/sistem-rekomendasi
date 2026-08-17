@@ -10,3 +10,13 @@ export async function getLatestSensor() {
 
     return await response.json();
 }
+
+export async function getGrafikSensor() {
+  const response = await fetch(`${BASE_URL}/sensor/grafik`);
+
+  if (!response.ok) {
+    throw new Error("Gagal mengambil data sensor");
+  }
+
+  return response.json();
+}

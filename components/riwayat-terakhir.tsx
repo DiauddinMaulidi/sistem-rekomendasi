@@ -48,12 +48,12 @@ export function RiwayatDash({refresh}: Props) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {result?.map((data: any, index: number) => (
+                            {result?.data?.map((data: any, index: number) => (
                                 <TableRow key={index}>
                                     <TableCell>{data.tanggal}</TableCell>
                                     {/* <TableCell>{data.Lahan}</TableCell> */}
                                     <TableCell>{data.jenisPupuk}</TableCell>
-                                    <TableCell>{data.dosis}</TableCell>
+                                    <TableCell>{data.dosis} kg/ha</TableCell>
                                     <TableCell>
                                         <button className="cursor-pointer"><Eye size={18} /></button>
                                     </TableCell>

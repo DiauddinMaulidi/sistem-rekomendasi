@@ -16,21 +16,10 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import { BadgeCheck, Bookmark } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { getGrafikSensor } from "@/services/sensor"
 
 export const description = "An interactive area chart"
 
-const chartData = [
-  { date: "Senin", kelembaban: 60, pHtanah: 5.2, suhu: 28, nitrogen: 61, fosfor: 44, kalium: 84, ec: 1.87 },
-  { date: "Selasa", kelembaban: 45, pHtanah: 8.1, suhu: 23.2, nitrogen: 59, fosfor: 56, kalium: 18, ec: 0.21 },
-  { date: "Rabu", kelembaban: 52, pHtanah: 2.4, suhu: 22.8, nitrogen: 43, fosfor: 21, kalium: 119, ec: 1.88 },
-  { date: "Kamis", kelembaban: 42, pHtanah: 6.3, suhu: 10, nitrogen: 88, fosfor: 46, kalium: 34, ec: 0.36 },
-  { date: "Jumat", kelembaban: 73, pHtanah: 9.7, suhu: 27, nitrogen: 104, fosfor: 53, kalium: 98, ec: 2.16 },
-  { date: "Sabtu", kelembaban: 30, pHtanah: 4.5, suhu: 39, nitrogen: 48, fosfor: 31, kalium: 87, ec: 1.23 },
-  { date: "Minggu", kelembaban: 45, pHtanah: 8.6, suhu: 23.16, nitrogen: 56, fosfor: 20, kalium: 40, ec: 2.53 },
-]
-const parameterKeys = Object.keys(chartData[0]).filter((key) => key !== "date")
 const parameterColors: Record<string, string> = {
   kelembaban: "#3b82f6",
   pHtanah: "#22c55e",
@@ -70,16 +59,41 @@ const chartConfig = {
 
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("2d")
+  const [chartData, setChartData] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    if (isMobile) {
-      setTimeRange("7d")
+    async function loadData() {
+      try {
+        const res = await getGrafikSensor();
+
+        const grafik = res.map((item: any) => ({
+          date: new Date(item.tanggal).toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "short",
+          }),
+          kelembaban: item.kelembaban,
+          pHtanah: item.pH_Tanah,
+          suhu: item.suhuTanah,
+          nitrogen: item.nitrogen,
+          fosfor: item.fosfor,
+          kalium: item.kalium,
+          ec: item.ec,
+        }))
+        setChartData(grafik)
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [isMobile])
+
+    loadData();
+  }, []);
+
+  const parameterKeys =
+    chartData.length > 0
+      ? Object.keys(chartData[0]).filter((key) => key !== "date")
+      : []
 
   return (
-    <div className="grid grid-cols-[55%_45%] gap-4 items-stretch">
       <Card className="@container/card h-full">
         <CardHeader>
           <CardTitle>Tren Kondisi Tanah</CardTitle>
@@ -144,6 +158,5 @@ export function ChartAreaInteractive() {
           </ChartContainer>
         </CardContent>
       </Card>
-    </div>
   )
 }

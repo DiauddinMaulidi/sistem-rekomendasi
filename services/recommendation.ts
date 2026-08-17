@@ -18,3 +18,13 @@ export async function saveRecommendation(data:any){
     return await response.json();
 
 }
+
+export async function lastRecommendation(){
+    const response = await fetch(`${BASE_URL}/recommendation/last`);
+
+    if(!response.ok){
+        throw new Error("Save failed");
+    }
+
+    return await response.json();
+}

@@ -48,7 +48,7 @@ export function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-(--header-height)"
         />
         {dataTitle.map((item) => {
-          const isActive = pathname === item.url
+          const isActive = pathname.startsWith(item.url)
           
           return (
             <div>
