@@ -1,24 +1,43 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import * as React from "react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-import { useIsMobile } from "@/hooks/use-mobile"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart"
-import { getGrafikSensor } from "@/services/sensor"
+} from "@/components/ui/chart";
 
-export const description = "An interactive area chart"
+import { getGrafikSensor } from "@/services/sensor";
+import { useActiveLahan } from "@/components/active-lahan-context";
+
+interface SensorData {
+  id: number;
+  jenisTanaman: string;
+  kelembaban: number;
+  pH_Tanah: number;
+  suhuTanah: number;
+  nitrogen: number;
+  fosfor: number;
+  kalium: number;
+  ec: number;
+  tanggal: string;
+}
+
+interface ChartData {
+  tanggal: number;
+  kelembaban: number;
+  pHtanah: number;
+  suhu: number;
+  nitrogen: number;
+  fosfor: number;
+  kalium: number;
+  ec: number;
+}
 
 const parameterColors: Record<string, string> = {
   kelembaban: "#3b82f6",
@@ -28,12 +47,9 @@ const parameterColors: Record<string, string> = {
   fosfor: "#fcc603",
   kalium: "#03adfc",
   ec: "#fc035e",
-}
+};
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
   kelembaban: {
     label: "Kelembaban",
   },
@@ -55,108 +71,236 @@ const chartConfig = {
   ec: {
     label: "Electrical Conductivity",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
+
+function formatTanggal(value: string | number | Date | undefined) {
+  if (value === undefined || value === null) {
+    return "-";
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function formatTanggalSingkat(value: string | number | Date | undefined) {
+  if (value === undefined || value === null) {
+    return "-";
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+  });
+}
 
 export function ChartAreaInteractive() {
-  const isMobile = useIsMobile()
-  const [chartData, setChartData] = React.useState<any[]>([]);
+  const { lahanAktif } = useActiveLahan();
+
+  const [chartData, setChartData] = React.useState<ChartData[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     async function loadData() {
-      try {
-        const res = await getGrafikSensor();
+      if (!lahanAktif?.sensor) {
+        setChartData([]);
+        setLoading(false);
+        return;
+      }
 
-        const grafik = res.map((item: any) => ({
-          date: new Date(item.tanggal).toLocaleDateString("id-ID", {
-              day: "2-digit",
-              month: "short",
-          }),
-          kelembaban: item.kelembaban,
-          pHtanah: item.pH_Tanah,
-          suhu: item.suhuTanah,
-          nitrogen: item.nitrogen,
-          fosfor: item.fosfor,
-          kalium: item.kalium,
-          ec: item.ec,
-        }))
-        setChartData(grafik)
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res: SensorData[] = await getGrafikSensor(lahanAktif.sensor);
+
+        console.log("SENSOR ID:", lahanAktif.sensor);
+        console.log("DATA SENSOR DARI API:", res);
+
+        const grafik: ChartData[] = [...res]
+          .sort(
+            (a, b) =>
+              new Date(a.tanggal).getTime() - new Date(b.tanggal).getTime(),
+          )
+          .map((item) => ({
+            tanggal: new Date(item.tanggal).getTime(),
+            kelembaban: Number(item.kelembaban),
+            pHtanah: Number(item.pH_Tanah),
+            suhu: Number(item.suhuTanah),
+            nitrogen: Number(item.nitrogen),
+            fosfor: Number(item.fosfor),
+            kalium: Number(item.kalium),
+            ec: Number(item.ec),
+          }));
+
+        setChartData(grafik);
       } catch (err) {
-        console.log(err);
+        console.error("Gagal mengambil data grafik:", err);
+        setError("Gagal mengambil data sensor.");
+      } finally {
+        setLoading(false);
       }
     }
 
     loadData();
-  }, []);
-
-  const parameterKeys =
-    chartData.length > 0
-      ? Object.keys(chartData[0]).filter((key) => key !== "date")
-      : []
+  }, [lahanAktif?.sensor]);
 
   return (
-      <Card className="@container/card h-full">
-        <CardHeader>
-          <CardTitle>Tren Kondisi Tanah</CardTitle>
-        </CardHeader>
-        <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+    <Card className="w-full @container/card">
+      <CardHeader>
+        <CardTitle>Tren Kondisi Tanah</CardTitle>
+      </CardHeader>
+
+      <CardContent className="w-full px-2 pt-4 sm:px-6 sm:pt-6">
+        {loading ? (
+          <div className="flex h-60 items-center justify-center text-sm text-slate-500 sm:h-75 md:h-85 lg:h-95 dark:text-slate-400">
+            Memuat data sensor...
+          </div>
+        ) : error ? (
+          <div className="flex h-60 items-center justify-center text-sm text-red-500 sm:h-75 md:h-85 lg:h-95">
+            {error}
+          </div>
+        ) : chartData.length === 0 ? (
+          <div className="flex h-60 items-center justify-center text-sm text-slate-500 sm:h-75 md:h-85 lg:h-95 dark:text-slate-400">
+            Belum ada data sensor.
+          </div>
+        ) : (
           <ChartContainer
             config={chartConfig}
-            className="aspect-auto h-62.5 w-full"
+            className="h-60 w-full sm:h-75 md:h-85 lg:h-95"
           >
-            <LineChart data={chartData}>
-              <defs>
-                <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-desktop)"
-                    stopOpacity={1.0}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-desktop)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-                <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-mobile)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-mobile)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
-              <CartesianGrid vertical={false} />
+            <LineChart
+              data={chartData}
+              margin={{
+                top: 10,
+                right: 12,
+                left: 8,
+                bottom: 10,
+              }}
+            >
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+
               <XAxis
-                dataKey="date"
+                dataKey="tanggal"
+                type="number"
+                scale="time"
+                domain={["dataMin", "dataMax"]}
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                minTickGap={32}
+                minTickGap={24}
+                tickFormatter={(value) => formatTanggalSingkat(value)}
               />
+
+              <YAxis tickLine={false} axisLine={false} width={42} />
+
               <ChartTooltip
-                cursor={false}
+                cursor={{
+                  strokeDasharray: "4 4",
+                }}
                 content={
-                  <ChartTooltipContent indicator="dot"/>
+                  <ChartTooltipContent
+                    indicator="dot"
+                    labelFormatter={(value) => formatTanggal(value)}
+                  />
                 }
               />
-              {parameterKeys.map((chart) => (
-                <Line
-                  key={chart}
-                  dataKey={`${chart}`}
-                  type="natural"
-                  stroke={parameterColors[chart]}
-                  strokeWidth={2}
-                  dot={false}
-                />
-              ))}
+
+              <Line
+                type="natural"
+                dataKey="kelembaban"
+                name="Kelembaban"
+                stroke={parameterColors.kelembaban}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="pHtanah"
+                name="pH Tanah"
+                stroke={parameterColors.pHtanah}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="suhu"
+                name="Suhu Tanah"
+                stroke={parameterColors.suhu}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="nitrogen"
+                name="Nitrogen"
+                stroke={parameterColors.nitrogen}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="fosfor"
+                name="Fosfor"
+                stroke={parameterColors.fosfor}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="kalium"
+                name="Kalium"
+                stroke={parameterColors.kalium}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
+
+              <Line
+                type="natural"
+                dataKey="ec"
+                name="Electrical Conductivity"
+                stroke={parameterColors.ec}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+                connectNulls
+              />
             </LineChart>
           </ChartContainer>
-        </CardContent>
-      </Card>
-  )
+        )}
+      </CardContent>
+    </Card>
+  );
 }

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { SectionCards } from "@/components/section-cards"
-import { RekomendasiPemupukan } from "@/components/rekomendasi-pemupukan"
-import { useState } from "react"
+import { SectionCards } from "@/components/section-cards";
+import { RekomendasiPemupukan } from "@/components/rekomendasi-pemupukan";
+import { useState } from "react";
 
 export default function DashboardRek() {
-    const [refresh, setRefresh] = useState(false);
-    
-    const handleRefresh = () => {
-        setRefresh((prev) => !prev);
-    }
+  const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -21,5 +21,5 @@ export default function DashboardRek() {
         </div>
       </div>
     </div>
-  )
+  );
 }

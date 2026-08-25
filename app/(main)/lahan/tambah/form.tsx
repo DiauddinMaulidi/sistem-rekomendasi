@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -28,21 +28,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import Link from "next/link"
-import { ArrowLeft, RotateCw, Save, Upload } from "lucide-react"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { tambahLahan } from "@/services/tambah"
+} from "@/components/ui/select";
+import Link from "next/link";
+import { ArrowLeft, RotateCw, Save, Upload } from "lucide-react";
+import { tambahLahan } from "@/services/tambah";
 
 const formSchema = z.object({
   nama: z.string().min(3, "Nama lahan minimal 3 karakter."),
   luas: z.coerce.number(),
   lokasi: z.string().min(3, "Lokasi wajib diisi."),
   tanaman: z.string().min(1, "Silakan pilih jenis Tanaman."),
-  sensor: z.string().min(1, "status sensor."),
+  sensor: z.string().min(1, "ID sensor wajib diisi."),
   gambar: z.instanceof(File).nullable(),
-})
+});
 
 const tanaman = [
   { label: "Jagung", value: "Jagung" },
@@ -51,23 +49,40 @@ const tanaman = [
   { label: "Beras", value: "Beras" },
   { label: "Tebu", value: "Tebu" },
   { label: "Tomat", value: "Tomat" },
-]
+];
 
 export function FormTambah() {
-  const form = useForm<z.input<typeof formSchema>, any, z.output<typeof formSchema>>({
+  const router = useRouter();
+
+  const form = useForm<
+    z.input<typeof formSchema>,
+    any,
+    z.output<typeof formSchema>
+  >({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nama: "",
       luas: 0,
       lokasi: "",
       tanaman: "",
-      sensor: "aktif",
-      gambar: null
+      sensor: "",
+      gambar: null,
     },
-  })
+  });
 
   async function onSubmit(data: z.output<typeof formSchema>) {
-    await tambahLahan(data)
+    try {
+      await tambahLahan(data);
+
+      toast.success("Lahan berhasil disimpan");
+
+      router.push("/lahan");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Gagal menyimpan data lahan");
+    }
   }
 
   return (
@@ -79,7 +94,6 @@ export function FormTambah() {
       <CardContent>
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-
             <Controller
               name="nama"
               control={form.control}
@@ -97,9 +111,7 @@ export function FormTambah() {
                     <FieldError errors={[fieldState.error]} />
                   )}
 
-                  <FieldDescription>
-                    Contoh: Lahan Utama
-                  </FieldDescription>
+                  <FieldDescription>Contoh: Lahan Utama</FieldDescription>
                 </Field>
               )}
             />
@@ -116,16 +128,14 @@ export function FormTambah() {
                     type="number"
                     step="0.1"
                     value={field.value as number}
-                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
                   />
 
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
 
-                  <FieldDescription>
-                    Contoh: 1.5
-                  </FieldDescription>
+                  <FieldDescription>Contoh: 1.5</FieldDescription>
                 </Field>
               )}
             />
@@ -137,18 +147,13 @@ export function FormTambah() {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Lokasi / Desa</FieldLabel>
 
-                  <Input
-                    {...field}
-                    aria-invalid={fieldState.invalid}
-                  />
+                  <Input {...field} aria-invalid={fieldState.invalid} />
 
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
 
-                  <FieldDescription>
-                    Contoh: Desa Pancor
-                  </FieldDescription>
+                  <FieldDescription>Contoh: Desa Pancor</FieldDescription>
                 </Field>
               )}
             />
@@ -160,10 +165,7 @@ export function FormTambah() {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Jenis Tanaman</FieldLabel>
 
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
+                  <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih jenis tanaman" />
                     </SelectTrigger>
@@ -171,10 +173,7 @@ export function FormTambah() {
                     <SelectContent>
                       <SelectGroup>
                         {tanaman.map((item) => (
-                          <SelectItem
-                            key={item.value}
-                            value={item.value}
-                          >
+                          <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
                         ))}
@@ -194,23 +193,22 @@ export function FormTambah() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Status Sensor</FieldLabel>
+                  <FieldLabel>ID Sensor</FieldLabel>
 
-                  <RadioGroup value={field.value} onValueChange={field.onChange} className="flex gap-10">
-                    <div className="flex gap-3">
-                      <RadioGroupItem value="aktif" id="aktif" />
-                      <Label htmlFor="aktif">Aktif</Label>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <RadioGroupItem value="tidakAktif" id="tidakAktif" />
-                      <Label htmlFor="tidakAktif">Tidak Aktif</Label>
-                    </div>
-                  </RadioGroup>
+                  <Input
+                    {...field}
+                    placeholder="Contoh: ESP32-002"
+                    autoComplete="off"
+                    aria-invalid={fieldState.invalid}
+                  />
 
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
+
+                  <FieldDescription>
+                    Masukkan ID ESP32. Contoh: ESP32-001, ESP32-002.
+                  </FieldDescription>
                 </Field>
               )}
             />
@@ -224,7 +222,9 @@ export function FormTambah() {
 
                   <div
                     className="flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-border p-8 text-center transition-colors hover:border-primary"
-                    onClick={() => document.getElementById("fileUpload")?.click()}
+                    onClick={() =>
+                      document.getElementById("fileUpload")?.click()
+                    }
                   >
                     <div className="mb-2 rounded-full bg-muted p-3">
                       <Upload className="h-5 w-5 text-muted-foreground" />
@@ -247,7 +247,9 @@ export function FormTambah() {
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => field.onChange(e.target.files?.[0] ?? null)}
+                      onChange={(e) =>
+                        field.onChange(e.target.files?.[0] ?? null)
+                      }
                     />
                   </div>
 
@@ -267,7 +269,6 @@ export function FormTambah() {
                 </Field>
               )}
             />
-
           </FieldGroup>
         </form>
       </CardContent>
@@ -275,18 +276,28 @@ export function FormTambah() {
       <CardFooter className="flex justify-end gap-2">
         <Link href="/lahan">
           <Button className="cursor-pointer text-emerald-950 bg-white border border-emerald-600">
-              <ArrowLeft /> Batal
+            <ArrowLeft /> Batal
           </Button>
         </Link>
 
-        <Button type="submit" form="form-rhf-demo" className="bg-emerald-600 cursor-pointer">
+        <Button
+          type="submit"
+          form="form-rhf-demo"
+          disabled={form.formState.isSubmitting}
+          className="bg-emerald-600 cursor-pointer"
+        >
           <Save /> Simpan
         </Button>
-        
-        <Button variant="outline" type="button" onClick={() => form.reset()} className="cursor-pointer text-emerald-950 bg-white border border-emerald-600">
+
+        <Button
+          variant="outline"
+          type="button"
+          onClick={() => form.reset()}
+          className="cursor-pointer text-emerald-950 bg-white border border-emerald-600"
+        >
           <RotateCw /> Reset
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

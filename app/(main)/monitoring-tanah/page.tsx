@@ -13,7 +13,7 @@ export default function Page() {
             <div className="w-150">
               <ChartAreaInteractive />
             </div>
-            <div className="w-[400px] shrink-0">
+            <div className="w-100 shrink-0">
               <StatusTanah />
             </div>
           </div>

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { SectionCards } from "@/components/section-cards"
-import { RiwayatDash } from "@/components/riwayat-terakhir"
+import { useState } from "react";
+import { ChartAreaInteractive } from "@/components/chart-area-interactive";
+import { SectionCards } from "@/components/section-cards";
+import { RiwayatDash } from "@/components/riwayat-terakhir";
 
 export default function DashboardClient() {
-    const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
-    const handleRefresh = () => {
-        setRefresh((prev) => !prev);
-    }
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
 
   return (
     <div className="flex flex-1 flex-col">
@@ -25,5 +25,5 @@ export default function DashboardClient() {
         </div>
       </div>
     </div>
-  )
+  );
 }
