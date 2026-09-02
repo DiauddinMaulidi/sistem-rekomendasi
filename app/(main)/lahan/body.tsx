@@ -118,10 +118,6 @@ export function CardLahan() {
               ${isActive ? "ring-2 ring-emerald-600" : ""}
             `}
           >
-            {/* =====================================================
-                GAMBAR
-            ===================================================== */}
-
             <div
               className="
                 relative

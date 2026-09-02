@@ -88,11 +88,10 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               <div className="min-w-0">
                 <div className="flex items-baseline">
                   <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
-                    Agri
+                    Agro
                   </span>
-
                   <span className="text-lg font-black tracking-tight text-emerald-700 dark:text-lime-400">
-                    Smart
+                    Plan
                   </span>
                 </div>
 
@@ -371,7 +370,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     dark:text-slate-500
   "
         >
-          AgriSmart • Pemupukan Cerdas
+          AgroSMart • Pemupukan Cerdas
         </div>
       </SidebarFooter>
     </Sidebar>
