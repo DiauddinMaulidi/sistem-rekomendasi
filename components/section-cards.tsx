@@ -32,30 +32,48 @@ interface SensorData {
 }
 
 export function SectionCards() {
-  const [sensor, setSensor] = useState<any>(null);
+  const [sensor, setSensor] = useState<SensorData | null>(null);
   const { lahanAktif } = useActiveLahan();
 
   useEffect(() => {
+    const sensorId: string = lahanAktif?.sensor ?? "";
+
+    if (!sensorId) {
+      setSensor(null);
+      return;
+    }
+
+    let isMounted = true;
+
     async function loadSensor() {
-      if (!lahanAktif?.sensor) {
-        setSensor(null);
-        return;
-      }
-
       try {
-        console.log("Mengambil sensor:", lahanAktif.sensor);
+        console.log("Mengambil sensor:", sensorId);
 
-        const data = await getLatestSensor(lahanAktif.sensor);
+        const data = await getLatestSensor(sensorId);
 
         console.log("DATA SENSOR TERBARU:", data);
+
+        if (isMounted) {
+          setSensor(data);
+        }
 
         setSensor(data);
       } catch (err) {
         console.error("Gagal mengambil data sensor:", err);
-
-        setSensor(null);
       }
     }
+
+    setSensor(null);
+
+    const interval = setInterval(() => {
+      loadSensor();
+    }, 5000);
+
+    // Bersihkan interval
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
 
     loadSensor();
   }, [lahanAktif?.sensor]);

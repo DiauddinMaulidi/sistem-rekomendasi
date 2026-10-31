@@ -1,4 +1,5 @@
 import BASE_URL from "./api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL_HOST;
 
 type TambahLahanRequest = {
   nama: string;
@@ -23,7 +24,7 @@ export async function tambahLahan(data: TambahLahanRequest) {
       formData.append("gambar", data.gambar);
     }
 
-    const response = await fetch(`${BASE_URL}/lahan/tambah/save`, {
+    const response = await fetch(`${API_URL}/lahan/tambah/save`, {
       method: "POST",
       body: formData,
     });
@@ -35,7 +36,7 @@ export async function tambahLahan(data: TambahLahanRequest) {
 }
 
 export async function tampilLahan() {
-  const result = await fetch(`${BASE_URL}/lahan/tambah/get`);
+  const result = await fetch(`${API_URL}/lahan/tambah/get`);
 
   if (!result.ok) {
     throw new Error("Gagal tampil");
@@ -45,7 +46,7 @@ export async function tampilLahan() {
 }
 
 export async function hapusLahan(id: number | string) {
-  const response = await fetch(`${BASE_URL}/lahan/${id}`, {
+  const response = await fetch(`${API_URL}/lahan/${id}`, {
     method: "DELETE",
   });
 

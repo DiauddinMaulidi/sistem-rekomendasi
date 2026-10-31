@@ -113,7 +113,7 @@ export function CardLahan() {
               p-4
               shadow-lg
               transition-all
-              lg:grid-cols-[repeat(3,minmax(0,1fr))]
+              lg:grid-cols-3
               dark:bg-slate-900
               ${isActive ? "ring-2 ring-emerald-600" : ""}
             `}

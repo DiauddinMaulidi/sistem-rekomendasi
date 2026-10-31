@@ -1,7 +1,9 @@
-import BASE_URL from "./api";
+// import BASE_URL from "./api";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL_HOST;
 
 export async function getLahanById(id: string) {
-  const result = await fetch(`${BASE_URL}/lahan/edit/${id}`);
+  const result = await fetch(`${API_URL}/lahan/edit/${id}`);
 
   if (!result.ok) {
     throw new Error("Gagal mengambil data lahan");
@@ -34,7 +36,7 @@ export async function updateLahan(
     formData.append("gambar", data.gambar);
   }
 
-  const result = await fetch(`${BASE_URL}/lahan/edit/${id}`, {
+  const result = await fetch(`${API_URL}/lahan/edit/${id}`, {
     method: "PUT",
     body: formData,
   });
